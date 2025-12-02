@@ -1,10 +1,10 @@
-# SnowCast
+# SunCast
 
-SnowCast est un pipeline de calcul des heures de lever et coucher du soleil pour des départements français, basé sur des modèles numériques d'élévation (DEM). Le projet calcule les heures solaires pour chaque pixel d'une grille raster sur une année complète, en tenant compte de la topographie locale.
+SunCast est un pipeline de calcul des heures de lever et coucher du soleil pour des départements français, basé sur des modèles numériques d'élévation (DEM). Le projet calcule les heures solaires pour chaque pixel d'une grille raster sur une année complète, en tenant compte de la topographie locale.
 
 ## Vue d'ensemble
 
-Le pipeline SnowCast suit ces étapes principales :
+Le pipeline SunCast suit ces étapes principales :
 
 1. **Préparation des données** : extraction des DEM par département depuis un raster source
 2. **Calcul solaire** : exécution d'un calculateur C++ optimisé (OpenMP) pour calculer les heures de lever/coucher du soleil
@@ -77,7 +77,7 @@ data/
 ## Structure du projet
 
 ```
-SnowCast/
+SunCast/
 ├── CMakeLists.txt           # Configuration de compilation C++
 ├── requirements.txt          # Dépendances Python
 ├── README.md                 # Ce fichier
