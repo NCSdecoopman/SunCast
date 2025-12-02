@@ -32,6 +32,8 @@ Thumbs.db
 # Project data (raw, processed, intermediate, results)
 /data/*
 !/data/.keep
+/logs/*
+!/logs/.keep
 
 # Virtual environments and Python environment folders
 venv/

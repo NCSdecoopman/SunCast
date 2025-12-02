@@ -250,6 +250,32 @@ python -m src.viz.visualize_sunset_map --dept 38 --date 2025-06-21
 python -c "from src.utils.inspect_parquet import inspect_parquet; inspect_parquet('38')"
 ```
 
+## Exécution sur Cluster HPC (Slurm)
+
+Le projet est configuré pour s'exécuter sur un cluster HPC utilisant le gestionnaire de tâches Slurm.
+
+### 1. Configuration
+
+Le script `submit_job.slurm` est configuré pour lancer un "Job Array", où chaque tâche traite un département de la liste `TARGET_DEPARTMENTS` définie dans `src/config.py`.
+
+Si vous modifiez la liste des départements, mettez à jour la directive `#SBATCH --array` dans `submit_job.slurm` :
+- Pour 3 départements : `--array=0-2`
+- Pour N départements : `--array=0-(N-1)`
+
+### 2. Soumission du job
+
+```bash
+sbatch submit_job.slurm
+```
+
+Cela lancera autant de jobs parallèles que de départements. Chaque job utilisera les ressources demandées (par défaut 96 cœurs pour OpenMP).
+
+### 3. Suivi
+
+Les logs de sortie et d'erreur sont stockés dans le dossier `logs/` :
+- `logs/solar_X_JOBID.out` : Sortie standard pour le département d'index X
+- `logs/solar_X_JOBID.err` : Erreurs éventuelles
+
 ## Sources des données et licences
 
 - **Modèle numérique d'élévation (DEM)**  

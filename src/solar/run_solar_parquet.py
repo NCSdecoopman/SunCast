@@ -150,6 +150,13 @@ def process_department(dept_code, year=2025, threads=96):
         return False
 
 def main():
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Run solar calculation for departments")
+    parser.add_argument("--dept", type=str, help="Specific department code to process")
+    parser.add_argument("--index", type=int, help="Index of department in configuration list")
+    args = parser.parse_args()
+
     logger.info("=" * 60)
     logger.info("Solar Parquet Generator")
     logger.info("=" * 60)
@@ -158,18 +165,32 @@ def main():
         logger.error("Binary not found. Build first.")
         return 1
         
+    # Determine which departments to process
+    if args.dept:
+        if args.dept not in TARGET_DEPARTMENTS:
+            logger.warning(f"Department {args.dept} not in configuration target list, but proceeding anyway.")
+        departments_to_process = [args.dept]
+    elif args.index is not None:
+        if 0 <= args.index < len(TARGET_DEPARTMENTS):
+            departments_to_process = [TARGET_DEPARTMENTS[args.index]]
+        else:
+            logger.error(f"Index {args.index} out of range (0-{len(TARGET_DEPARTMENTS)-1})")
+            return 1
+    else:
+        departments_to_process = TARGET_DEPARTMENTS
+
     success_count = 0
     total_start = time.time()
     
-    for dept in TARGET_DEPARTMENTS:
+    for dept in departments_to_process:
         if process_department(dept):
             success_count += 1
             
     total_duration = time.time() - total_start
     logger.info("=" * 60)
-    logger.info(f"Finished {success_count}/{len(TARGET_DEPARTMENTS)} departments in {total_duration:.2f}s")
+    logger.info(f"Finished {success_count}/{len(departments_to_process)} departments in {total_duration:.2f}s")
     
-    return 0 if success_count == len(TARGET_DEPARTMENTS) else 1
+    return 0 if success_count == len(departments_to_process) else 1
 
 if __name__ == "__main__":
     sys.exit(main())
